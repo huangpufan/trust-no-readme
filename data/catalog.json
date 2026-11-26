@@ -70,6 +70,18 @@
       ],
       "upstream_issues": [
         {
+          "state": "open",
+          "url": "https://github.com/browser-use/browser-use/issues/6541",
+          "label": "F1/F4: pyproject.toml pins browser-harness==0.1.13 & CLI forwards $process_person_profile: true",
+          "ref": "#6541"
+        },
+        {
+          "state": "open",
+          "url": "https://github.com/browser-use/browser-use/issues/6542",
+          "label": "F5: ProductTelemetry._at_exit() omits job.consent check after runtime opt-out",
+          "ref": "#6542"
+        },
+        {
           "state": "existing",
           "url": "https://github.com/browser-use/browser-use/issues/6467",
           "label": "F3: skill prompt sends feedback without asking user",
@@ -123,6 +135,18 @@
             }
           ],
           "upstream_issues": [
+            {
+              "state": "open",
+              "url": "https://github.com/browser-use/browser-use/issues/6541",
+              "label": "F1/F4: pyproject.toml pins browser-harness==0.1.13 & CLI forwards $process_person_profile: true",
+              "ref": "#6541"
+            },
+            {
+              "state": "open",
+              "url": "https://github.com/browser-use/browser-use/issues/6542",
+              "label": "F5: ProductTelemetry._at_exit() omits job.consent check after runtime opt-out",
+              "ref": "#6542"
+            },
             {
               "state": "existing",
               "url": "https://github.com/browser-use/browser-use/issues/6467",

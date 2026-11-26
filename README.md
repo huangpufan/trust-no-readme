@@ -38,7 +38,7 @@ Currently tracking **1** project(s) across **1** SHA-pinned snapshot(s):
 
 | Project | Revision | Rating & Verdict | Key Finding | Upstream Issues | Report |
 |---|---|---|---|---|---|
-| [`browser-use/browser-use`](./audits/github/browser-use/browser-use/README.md) | `1.0.8`<br>`94784c1f` | `H4 / R3` · `E3+D`<br>**`Isolate`** | 141-day raw script/password telemetry (PR #733 rejected), 46s README wipe, coding-agent opt-out bypass & silent --help tracking. | [#6467](https://github.com/browser-use/browser-use/issues/6467) (existing) | [EN](./audits/github/browser-use/browser-use/2026-11-26-94784c1f.md) · [中文](./audits/github/browser-use/browser-use/2026-11-26-94784c1f.zh-CN.md) |
+| [`browser-use/browser-use`](./audits/github/browser-use/browser-use/README.md) | `1.0.8`<br>`94784c1f` | `H4 / R3` · `E3+D`<br>**`Isolate`** | 141-day raw script/password telemetry (PR #733 rejected), 46s README wipe, coding-agent opt-out bypass & silent --help tracking. | [#6541](https://github.com/browser-use/browser-use/issues/6541) (open)<br>[#6542](https://github.com/browser-use/browser-use/issues/6542) (open)<br>[#6467](https://github.com/browser-use/browser-use/issues/6467) (existing) | [EN](./audits/github/browser-use/browser-use/2026-11-26-94784c1f.md) · [中文](./audits/github/browser-use/browser-use/2026-11-26-94784c1f.zh-CN.md) |
 <!-- CATALOG:END -->
 
 > **Quick legend** (full rubric in [`METHODOLOGY.md`](./METHODOLOGY.md)):

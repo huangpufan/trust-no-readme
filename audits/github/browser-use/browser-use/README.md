@@ -11,6 +11,8 @@
 
 ## Upstream Issues Tracked
 
+- [#6541](https://github.com/browser-use/browser-use/issues/6541) (`open`): F1/F4: pyproject.toml pins browser-harness==0.1.13 & CLI forwards $process_person_profile: true
+- [#6542](https://github.com/browser-use/browser-use/issues/6542) (`open`): F5: ProductTelemetry._at_exit() omits job.consent check after runtime opt-out
 - [#6467](https://github.com/browser-use/browser-use/issues/6467) (`existing`): F3: skill prompt sends feedback without asking user
 
 ## Audit Snapshots (Newest First)

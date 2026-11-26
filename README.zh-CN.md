@@ -38,7 +38,7 @@
 
 | 项目 | 版本 / SHA | 评级与结论 | 核心发现 | 上游 Issue | 报告 |
 |---|---|---|---|---|---|
-| [`browser-use/browser-use`](./audits/github/browser-use/browser-use/README.md) | `1.0.8`<br>`94784c1f` | `H4 / R3` · `E3+D`<br>**`Isolate`** | 持续141天上传脚本与密码（拒合PR#733）、46秒删光README遥测节、借编程Agent绕过关闭开关、连--help也开人物画像。 | [#6467](https://github.com/browser-use/browser-use/issues/6467) (existing) | [EN](./audits/github/browser-use/browser-use/2026-11-26-94784c1f.md) · [中文](./audits/github/browser-use/browser-use/2026-11-26-94784c1f.zh-CN.md) |
+| [`browser-use/browser-use`](./audits/github/browser-use/browser-use/README.md) | `1.0.8`<br>`94784c1f` | `H4 / R3` · `E3+D`<br>**`Isolate`** | 持续141天上传脚本与密码（拒合PR#733）、46秒删光README遥测节、借编程Agent绕过关闭开关、连--help也开人物画像。 | [#6541](https://github.com/browser-use/browser-use/issues/6541) (open)<br>[#6542](https://github.com/browser-use/browser-use/issues/6542) (open)<br>[#6467](https://github.com/browser-use/browser-use/issues/6467) (existing) | [EN](./audits/github/browser-use/browser-use/2026-11-26-94784c1f.md) · [中文](./audits/github/browser-use/browser-use/2026-11-26-94784c1f.zh-CN.md) |
 <!-- CATALOG:END -->
 
 > **一分钟看懂标签**（完整规则见 [`METHODOLOGY.md`](./METHODOLOGY.md)）：
