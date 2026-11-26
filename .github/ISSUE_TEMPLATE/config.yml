@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Submit an Audit or Re-Audit Pull Request (Humans & AI Agents)
+    url: https://github.com/huangpufan/trust-no-readme/blob/main/AGENTS.md
+    about: Use our templates, scaffolder, and CI-verified validator to submit a new audit, fix re-audit, or maintainer response PR.
+  - name: Responsible Disclosure Policy (Do Not Post 0-Days Here)
+    url: https://github.com/huangpufan/trust-no-readme/blob/main/DISCLOSURE.md
+    about: Unpatched exploitable vulnerabilities must be reported privately to the upstream project's SECURITY.md or GitHub PVR first.

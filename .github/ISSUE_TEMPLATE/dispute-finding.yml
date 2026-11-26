@@ -1,0 +1,31 @@
+name: Dispute Finding / Factual Correction
+description: Provide code-level counter-evidence if a snapshot misread a guard, default, or claim at the audited SHA.
+title: "[Dispute] owner/repo: F#"
+labels: ["dispute"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        We correct verified factual errors transparently and credit the reporter.
+        If the code was changed in a **newer** commit, please use **Report Fix & Request Re-Audit** instead.
+  - type: input
+    id: snapshot
+    attributes:
+      label: Audit Snapshot Path
+      placeholder: audits/github/owner/repo/YYYY-MM-DD-shortsha.md
+    validations:
+      required: true
+  - type: input
+    id: finding_id
+    attributes:
+      label: Finding ID or Section
+      placeholder: e.g. F1, Claim C2, Cleared Surfaces
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Exact file:line Counter-Evidence at the Audited SHA
+      description: Cite the exact file:line, guard condition, or documentation passage at the audited SHA that refutes or narrows the finding.
+    validations:
+      required: true

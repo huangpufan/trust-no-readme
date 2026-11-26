@@ -1,0 +1,32 @@
+name: Report Fix & Request Re-Audit
+description: Maintainer or contributor reporting a commit/release that fixes a finding in a published audit.
+title: "[Fix Re-Audit] owner/repo"
+labels: ["re-audit"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for fixing the issue! We verify fixes promptly and publish a new immutable snapshot while marking the old snapshot `superseded`.
+        Maintainers or agents may also open a Re-Audit PR directly (see [AGENTS.md](https://github.com/huangpufan/trust-no-readme/blob/main/AGENTS.md)).
+  - type: input
+    id: repo
+    attributes:
+      label: Audited Project
+      placeholder: owner/repo
+    validations:
+      required: true
+  - type: input
+    id: fix_sha
+    attributes:
+      label: Fix Commit SHA or Release Tag
+      description: Exact 40-character commit SHA (preferred) or release tag containing the fix.
+      placeholder: 40-character commit SHA
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Findings Addressed & PR / Release Links
+      description: List the finding IDs (e.g. F1, F2), upstream issue/PR links, and any config/doc changes.
+    validations:
+      required: true

@@ -1,0 +1,26 @@
+# trust-no-readme
+
+> Reproducible, commit-pinned code-vs-claims audits of popular open-source projects, mechanically verified against upstream Git commits in CI.
+
+## Machine-Readable Index & Schema
+- [Catalog JSON](data/catalog.json): All tracked projects, pinned SHAs, dual-axis ratings (`honesty`, `risk`), verdicts, upstream issue links, and report paths.
+- [Frontmatter Schema](data/schema/audit-frontmatter.schema.json): JSON Schema for canonical audit snapshots (`YYYY-MM-DD-<8char-sha>.md`).
+
+## Agent & Contributor Protocol
+- [AGENTS.md](AGENTS.md): Canonical instructions for AI agents (querying audits, submitting new audit PRs, fix re-audits, maintainer responses, and structured Issues).
+- [CONTRIBUTING.md](CONTRIBUTING.md): Contributor guide and CI gates.
+- [METHODOLOGY.md](METHODOLOGY.md): Independent Contract Alignment (`H0–H4`) and Boundary Risk (`R0–R4`) rubric and Evidence Tiers (`E0–E3+D`).
+- [DISCLOSURE.md](DISCLOSURE.md): Coordinated vulnerability disclosure, upstream issue filing etiquette, and maintainer right of reply.
+
+## Submission Templates
+- [New Audit Snapshot Template](templates/audit-snapshot.md)
+- [Fix Re-Audit Snapshot Template](templates/reaudit-snapshot.md)
+- [Maintainer Response Template](templates/maintainer-response.md)
+- [Upstream Engineering Issue Template](templates/upstream-issue.md)
+- [Pull Request Template](.github/PULL_REQUEST_TEMPLATE.md)
+
+## Local CLI Commands (Stdlib-Only Python 3.11+)
+- Scaffold snapshot: `python3 tools/new_audit.py --repo owner/name --sha <40-hex> --category <cat>`
+- Rebuild catalog & README tables: `python3 tools/build_index.py`
+- Verify schema, hygiene, tokens & upstream citations (JSON): `python3 tools/validate.py --verify-upstream --format json`
+- Run unit tests: `python3 -m unittest discover -s tests -v`

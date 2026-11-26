@@ -1,0 +1,137 @@
+{
+  "schema_version": 2,
+  "project_count": 1,
+  "snapshot_count": 1,
+  "by_tag": {
+    "host-code-execution": [
+      "browser-use/browser-use"
+    ],
+    "person-profile-tracking": [
+      "browser-use/browser-use"
+    ],
+    "personal-browser-profile": [
+      "browser-use/browser-use"
+    ],
+    "pinned-dependency-leak": [
+      "browser-use/browser-use"
+    ],
+    "prompt-driven-feedback": [
+      "browser-use/browser-use"
+    ],
+    "silent-policy-removal": [
+      "browser-use/browser-use"
+    ],
+    "telemetry-opt-out-bypass": [
+      "browser-use/browser-use"
+    ],
+    "temp-file-retention": [
+      "browser-use/browser-use"
+    ]
+  },
+  "projects": [
+    {
+      "forge": "github",
+      "repo": "browser-use/browser-use",
+      "upstream_url": "https://github.com/browser-use/browser-use",
+      "project_readme": "audits/github/browser-use/browser-use/README.md",
+      "latest_report": "audits/github/browser-use/browser-use/2026-11-26-94784c1f.md",
+      "latest_translations": {
+        "zh-CN": "audits/github/browser-use/browser-use/2026-11-26-94784c1f.zh-CN.md"
+      },
+      "latest_sha": "94784c1f7ecb6b0a5f565b7f9fba59e395b7e048",
+      "latest_short_sha": "94784c1f",
+      "release": "1.0.8",
+      "audited_at": "2026-11-26",
+      "category": "browser-agent",
+      "honesty": "H4",
+      "h3_scope": "primary",
+      "risk": "R3",
+      "verdict": "Isolate",
+      "evidence_max": "E3+D",
+      "coverage": "full-exhaustive",
+      "verification": "static+release-diff+dynamic",
+      "disclosure": "public",
+      "status": "active",
+      "headline_en": "141-day raw script/password telemetry (PR #733 rejected), 46s README wipe, coding-agent opt-out bypass & silent --help tracking.",
+      "headline_zh": "持续141天上传脚本与密码（拒合PR#733）、46秒删光README遥测节、借编程Agent绕过关闭开关、连--help也开人物画像。",
+      "companion_repos": [
+        {
+          "alias": "bh0113",
+          "forge": "github",
+          "repo": "browser-use/browser-harness",
+          "sha": "c24e5072ee66f8499bacd663f4f4bcb089bc4492"
+        },
+        {
+          "alias": "bh0115",
+          "forge": "github",
+          "repo": "browser-use/browser-harness",
+          "sha": "373aecc4c40ef67d97b5ee69c144684a64a42a11"
+        }
+      ],
+      "upstream_issues": [
+        {
+          "state": "existing",
+          "url": "https://github.com/browser-use/browser-use/issues/6467",
+          "label": "F3: skill prompt sends feedback without asking user",
+          "ref": "#6467"
+        }
+      ],
+      "tags": [
+        "telemetry-opt-out-bypass",
+        "pinned-dependency-leak",
+        "prompt-driven-feedback",
+        "person-profile-tracking",
+        "silent-policy-removal",
+        "host-code-execution",
+        "personal-browser-profile",
+        "temp-file-retention"
+      ],
+      "has_responses": false,
+      "snapshot_count": 1,
+      "snapshots": [
+        {
+          "file": "audits/github/browser-use/browser-use/2026-11-26-94784c1f.md",
+          "translations": {
+            "zh-CN": "audits/github/browser-use/browser-use/2026-11-26-94784c1f.zh-CN.md"
+          },
+          "sha": "94784c1f7ecb6b0a5f565b7f9fba59e395b7e048",
+          "short_sha": "94784c1f",
+          "release": "1.0.8",
+          "audited_at": "2026-11-26",
+          "honesty": "H4",
+          "h3_scope": "primary",
+          "risk": "R3",
+          "verdict": "Isolate",
+          "evidence_max": "E3+D",
+          "coverage": "full-exhaustive",
+          "verification": "static+release-diff+dynamic",
+          "git_depth": "full",
+          "disclosure": "public",
+          "status": "active",
+          "companion_repos": [
+            {
+              "alias": "bh0113",
+              "forge": "github",
+              "repo": "browser-use/browser-harness",
+              "sha": "c24e5072ee66f8499bacd663f4f4bcb089bc4492"
+            },
+            {
+              "alias": "bh0115",
+              "forge": "github",
+              "repo": "browser-use/browser-harness",
+              "sha": "373aecc4c40ef67d97b5ee69c144684a64a42a11"
+            }
+          ],
+          "upstream_issues": [
+            {
+              "state": "existing",
+              "url": "https://github.com/browser-use/browser-use/issues/6467",
+              "label": "F3: skill prompt sends feedback without asking user",
+              "ref": "#6467"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

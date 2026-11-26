@@ -1,0 +1,32 @@
+name: Request Project Audit
+description: Nominate an open-source project for a commit-pinned code-vs-claims audit.
+title: "[Audit Request] owner/repo"
+labels: ["audit-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Nominate a public open-source project for auditing.
+        **Do not** post unpatched exploitable security vulnerabilities here (see [DISCLOSURE.md](https://github.com/huangpufan/trust-no-readme/blob/main/DISCLOSURE.md)).
+  - type: input
+    id: repo
+    attributes:
+      label: Repository URL
+      description: Canonical GitHub, GitLab, or Codeberg URL.
+      placeholder: https://github.com/owner/repo
+    validations:
+      required: true
+  - type: input
+    id: sha_or_tag
+    attributes:
+      label: Specific Release Tag or Commit SHA (Optional)
+      placeholder: e.g. v1.2.3 or 40-char commit SHA
+    validations:
+      required: false
+  - type: textarea
+    id: claims
+    attributes:
+      label: Specific Claims or Trust Boundaries to Check
+      description: Quote the README/privacy/security promise or default behavior worth verifying (with links if known).
+    validations:
+      required: true
