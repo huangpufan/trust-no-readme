@@ -16,9 +16,9 @@
 
 ---
 
-## 2. Two Strictly Independent Axes
+## 2. Three Strictly Independent Axes
 
-Honesty and risk are **never** averaged into one score. A high-privilege tool that honestly documents its host permissions scores `H0` / `H1` with `R3`.
+Honesty, workstation risk, and upstream responsiveness are **never** averaged into one score. A high-privilege tool that honestly documents its host permissions scores `H0` / `H1` with `R3`, and how a team responds after an issue is filed is tracked on its own longitudinal axis.
 
 ### Axis A: Contract Alignment (`H0–H4`)
 Does default code obey explicit README, security-doc, license, or UI promises? Accurate disclosure resolves `H`.
@@ -51,17 +51,25 @@ Evaluated on the default threat profile: **a developer workstation holding AI/cl
 | **`Isolate`** | `R = 3` (even if `H0`), or `H ≥ 3` neutralized by container / OS-user / egress isolation |
 | **`Avoid`** | `R = 4`, or `H ≥ 3` with no effective mitigation for the target requirement |
 
+### Axis C: Upstream Remediation & Responsiveness (Longitudinal, Per-Project)
+Tracked inside each project's mutable [`tracking.json`](./data/schema/tracking.schema.json) while keeping historical audit snapshots strictly immutable. Responsiveness is expressed solely through **dated, link-backed tracker behaviors**, never subjective adjectives about maintainer character.
+
+- **Strict Attribution (`origin`):** `audit_filed` (issues opened by `trust-no-readme`) and publicly disclosed `private_disclosures` count toward the root **Supervision Impact & Outcomes** ledger; `pre_existing` community issues are tracked transparently without claiming origination credit.
+- **Verification Gate Before Crediting a Fix:** An upstream issue closed as `completed` or linked to a merged PR automatically enters `fix_claimed` only. Promoting an item to `verified_main` requires inspecting the upstream `fix_commit` source diff (which CI mechanically verifies exists upstream); promoting to `verified_shipped` requires confirming the fix shipped in a release and publishing an immutable re-audit snapshot.
+- **History Preservation Rule:** Fixing verified defects earns an updated current rating and prominent credit in the Impact ledger, **without erasing history**. When a re-audit improves a project's rating (for example `H4 / R3` to `H0 / R1`), the root table and project page permanently display both the current verified rating and the historical peak (`peak H4/R3 @ 1.0.8`) alongside archived `superseded` snapshots.
+- **Mechanically Derived Posture:** `tools/build_index.py` derives a deterministic project posture (`Remediated (Shipped)`, `Fixed on Main`, `Active Remediation`, `Mixed Response`, `Fix Claimed (Unverified)`, `Community PRs Only`, `Triaged / Open`, `No Response (Nd)`, `Declined / Unfixed`, or `Regression Detected`) strictly from verified item states and `last_checked_at - filed_at`.
+
 ---
 
 ## 3. Report Structure & Mechanical Verification
 
 Every canonical snapshot (`audits/<forge>/<owner>/<repo>/YYYY-MM-DD-<8char-sha>.md`) is written in English (with optional `.zh-CN.md` translation) and must include:
 
-1. **Executive Verdict** (10-second verdict card + top findings table with upstream issue status).
+1. **Executive Verdict** (10-second verdict card + top findings table with upstream issue references).
 2. **Snapshot & Claim Ledger** (audited SHA vs. shipped release parity + numbered claims with clickable GitHub permalinks).
 3. **Detailed Findings** (Promise vs. Code, 5–15 line verbatim source excerpts, dynamic/static verification, explicit non-affected scope boundaries, timeline, and concrete mitigation).
 4. **Trajectory** (dated commits, PRs, and advisories separated from current-SHA ratings).
 5. **Cleared Surfaces** (what was inspected and verified clean, preventing one-sided reporting).
 6. **Coverage, Limits & Gaps** (explicit scope boundaries and out-of-snapshot `E0` gaps).
 
-CI (`tools/validate.py --verify-upstream`) inertly fetches every audited SHA and declared `companion_repos` SHA read-only and mechanically verifies file existence, line bounds, permalink SHAs, and cited code identifiers.
+CI (`tools/validate.py --verify-upstream`) inertly fetches every audited SHA, declared `companion_repos` SHA, and claimed `fix_commit` in `tracking.json` read-only and mechanically verifies file existence, line bounds, permalink SHAs, cited code identifiers, and upstream fix commits.

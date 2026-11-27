@@ -1,0 +1,218 @@
+{
+  "schema_version": 1,
+  "repo": "browser-use/browser-use",
+  "forge": "github",
+  "official_bots": [],
+  "last_checked_at": "2026-11-27",
+  "latest_upstream_release": {
+    "tag": "1.0.9",
+    "published_at": "2026-11-26T22:45:43Z",
+    "url": "https://github.com/browser-use/browser-use/releases/tag/1.0.9"
+  },
+  "items": [
+    {
+      "id": "browser-use-6541",
+      "origin": "audit_filed",
+      "snapshot": "2026-11-26-94784c1f.md",
+      "finding_ids": [
+        "F1",
+        "F4"
+      ],
+      "resolved_findings": [],
+      "url": "https://github.com/browser-use/browser-use/issues/6541",
+      "ref": "#6541",
+      "title_en": "Hard-pinned browser-harness==0.1.13 telemetry & CLI $process_person_profile: true",
+      "title_zh": "锁死旧版 browser-harness==0.1.13 遥测且 CLI 透传 $process_person_profile: true",
+      "latent_days": 141,
+      "filed_at": "2026-11-26T09:08:59Z",
+      "status": "pr_open",
+      "maintainer_response": {
+        "replied": false,
+        "first_reply_at": null,
+        "first_decision_at": null,
+        "actor": null,
+        "summary_en": "External contributor opened partial PR #6545 (CLI person-profile only); release 1.0.9 shipped without addressing #6541 and maintainers have not replied yet.",
+        "summary_zh": "外部社区贡献者已提部分修复 PR #6545（仅处理人物画像字段）；1.0.9 发版未包含修复，维护者尚未回复。"
+      },
+      "remediation": {
+        "pr_url": "https://github.com/browser-use/browser-use/pull/6545",
+        "pr_author_type": "community",
+        "fix_commit": null,
+        "merged_at": null,
+        "fix_release": null,
+        "verified_at": null,
+        "verified_snapshot": null,
+        "verification_summary_en": null,
+        "verification_summary_zh": null
+      },
+      "resolution_evidence_url": null,
+      "observed": {
+        "github_state": "open",
+        "state_reason": null,
+        "labels": [],
+        "closed_at": null,
+        "linked_prs": [
+          {
+            "number": 6545,
+            "url": "https://github.com/browser-use/browser-use/pull/6545",
+            "state": "open",
+            "merged": false,
+            "merge_commit_sha": null,
+            "author_association": "NONE"
+          }
+        ]
+      },
+      "events": [
+        {
+          "date": "2026-11-26",
+          "kind": "filed",
+          "url": "https://github.com/browser-use/browser-use/issues/6541",
+          "commit": null,
+          "summary_en": "Filed upstream bug issue covering F1 and F4 at 94784c1f / 1.0.8.",
+          "summary_zh": "基于 94784c1f 与 1.0.8 提交覆盖 F1 与 F4 的上游 Issue。"
+        },
+        {
+          "date": "2026-11-26",
+          "kind": "pr_opened",
+          "url": "https://github.com/browser-use/browser-use/pull/6545",
+          "commit": null,
+          "summary_en": "Community contributor opened PR #6545 targeting CLI person-profile forwarding; awaiting maintainer review.",
+          "summary_zh": "社区贡献者提交 PR #6545 处理 CLI 人物画像透传，待维护者审核。"
+        }
+      ]
+    },
+    {
+      "id": "browser-use-6542",
+      "origin": "audit_filed",
+      "snapshot": "2026-11-26-94784c1f.md",
+      "finding_ids": [
+        "F5"
+      ],
+      "resolved_findings": [],
+      "url": "https://github.com/browser-use/browser-use/issues/6542",
+      "ref": "#6542",
+      "title_en": "ProductTelemetry._at_exit() omits job.consent check after runtime opt-out",
+      "title_zh": "运行时关闭遥测后 ProductTelemetry._at_exit() 漏查 job.consent 仍发送队列事件",
+      "latent_days": null,
+      "filed_at": "2026-11-26T09:09:02Z",
+      "status": "pr_open",
+      "maintainer_response": {
+        "replied": false,
+        "first_reply_at": null,
+        "first_decision_at": null,
+        "actor": null,
+        "summary_en": "External contributor opened PR #6549; release 1.0.9 shipped without addressing #6542 and maintainers have not replied yet.",
+        "summary_zh": "外部社区贡献者已提 PR #6549；1.0.9 发版未包含修复，维护者尚未回复。"
+      },
+      "remediation": {
+        "pr_url": "https://github.com/browser-use/browser-use/pull/6549",
+        "pr_author_type": "community",
+        "fix_commit": null,
+        "merged_at": null,
+        "fix_release": null,
+        "verified_at": null,
+        "verified_snapshot": null,
+        "verification_summary_en": null,
+        "verification_summary_zh": null
+      },
+      "resolution_evidence_url": null,
+      "observed": {
+        "github_state": "open",
+        "state_reason": null,
+        "labels": [],
+        "closed_at": null,
+        "linked_prs": [
+          {
+            "number": 6549,
+            "url": "https://github.com/browser-use/browser-use/pull/6549",
+            "state": "open",
+            "merged": false,
+            "merge_commit_sha": null,
+            "author_association": "NONE"
+          }
+        ]
+      },
+      "events": [
+        {
+          "date": "2026-11-26",
+          "kind": "filed",
+          "url": "https://github.com/browser-use/browser-use/issues/6542",
+          "commit": null,
+          "summary_en": "Filed upstream bug issue covering F5 at 94784c1f / 1.0.8.",
+          "summary_zh": "基于 94784c1f 与 1.0.8 提交覆盖 F5 的上游 Issue。"
+        },
+        {
+          "date": "2026-11-27",
+          "kind": "pr_opened",
+          "url": "https://github.com/browser-use/browser-use/pull/6549",
+          "commit": null,
+          "summary_en": "Community contributor opened PR #6549 dropping queued non-consent events on runtime disable; awaiting maintainer review.",
+          "summary_zh": "社区贡献者提交 PR #6549 修复退出刷新漏查问题，待维护者审核。"
+        }
+      ]
+    },
+    {
+      "id": "browser-use-6467",
+      "origin": "pre_existing",
+      "snapshot": "2026-11-26-94784c1f.md",
+      "finding_ids": [
+        "F3"
+      ],
+      "resolved_findings": [],
+      "url": "https://github.com/browser-use/browser-use/issues/6467",
+      "ref": "#6467",
+      "title_en": "Bundled skill prompt asks coding agents to send feedback without user confirmation",
+      "title_zh": "内置 Skill 提示词让编程 Agent 无需询问用户直接发反馈",
+      "latent_days": null,
+      "filed_at": "2026-11-18T19:26:41Z",
+      "status": "pr_open",
+      "maintainer_response": {
+        "replied": false,
+        "first_reply_at": null,
+        "first_decision_at": null,
+        "actor": null,
+        "summary_en": "Pre-existing community issue open since 2026-11-18 with external PR #6470 unmerged; no maintainer response recorded.",
+        "summary_zh": "2026-11-18 起的已有社区 Issue，外部 PR #6470 未合入，尚无维护者回应。"
+      },
+      "remediation": {
+        "pr_url": "https://github.com/browser-use/browser-use/pull/6470",
+        "pr_author_type": "contributor",
+        "fix_commit": null,
+        "merged_at": null,
+        "fix_release": null,
+        "verified_at": null,
+        "verified_snapshot": null,
+        "verification_summary_en": null,
+        "verification_summary_zh": null
+      },
+      "resolution_evidence_url": null,
+      "observed": {
+        "github_state": "open",
+        "state_reason": null,
+        "labels": [],
+        "closed_at": null,
+        "linked_prs": [
+          {
+            "number": 6470,
+            "url": "https://github.com/browser-use/browser-use/pull/6470",
+            "state": "open",
+            "merged": false,
+            "merge_commit_sha": null,
+            "author_association": "CONTRIBUTOR"
+          }
+        ]
+      },
+      "events": [
+        {
+          "date": "2026-11-18",
+          "kind": "filed",
+          "url": "https://github.com/browser-use/browser-use/issues/6467",
+          "commit": null,
+          "summary_en": "Pre-existing community issue opened requesting user confirmation before skill feedback submission.",
+          "summary_zh": "社区成员提交既有 Issue，要求 Skill 发反馈前先经用户确认。"
+        }
+      ]
+    }
+  ],
+  "private_disclosures": []
+}

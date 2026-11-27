@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "repo": "CherryHQ/cherry-studio",
+  "forge": "github",
+  "official_bots": [
+    "cherry-issue-label[bot]",
+    "cherry-pr-merge[bot]"
+  ],
+  "last_checked_at": "2026-11-27",
+  "latest_upstream_release": {
+    "tag": "v2.2.3",
+    "published_at": "2026-11-19T15:07:11Z",
+    "url": "https://github.com/CherryHQ/cherry-studio/releases/tag/v2.2.3"
+  },
+  "items": [
+    {
+      "id": "cherry-studio-25579",
+      "origin": "audit_filed",
+      "snapshot": "2026-11-27-62867d8f.md",
+      "finding_ids": [
+        "F2"
+      ],
+      "resolved_findings": [
+        "F2"
+      ],
+      "url": "https://github.com/CherryHQ/cherry-studio/issues/25579",
+      "ref": "#25579",
+      "title_en": "Zero-click PlantUML diagram egress to www.plantuml.com",
+      "title_zh": "PlantUML 代码块零点击外发完整图源至 www.plantuml.com",
+      "latent_days": 431,
+      "filed_at": "2026-11-27T06:19:08Z",
+      "status": "verified_main",
+      "maintainer_response": {
+        "replied": true,
+        "first_reply_at": "2026-11-27T07:38:16Z",
+        "first_decision_at": "2026-11-27T07:38:16Z",
+        "actor": "cherry-issue-label[bot]",
+        "summary_en": "Official triage confirmed the issue (79m) and merged PR #25582 to main (7.5h after filing).",
+        "summary_zh": "官方分诊 79 分钟内确认缺陷，提单 7.5 小时后合入 PR #25582。"
+      },
+      "remediation": {
+        "pr_url": "https://github.com/CherryHQ/cherry-studio/pull/25582",
+        "pr_author_type": "contributor",
+        "fix_commit": "f59df558c95c7e571c45cd39d604250abce2ac6d",
+        "merged_at": "2026-11-27T13:48:11Z",
+        "fix_release": null,
+        "verified_at": "2026-11-27",
+        "verified_snapshot": null,
+        "verification_summary_en": "Verified commit f59df558: plantuml defaults to source view (including streamed transitions) and PlantUmlPreview gates remote www.plantuml.com fetches behind an explicit host-disclosing click per mount; shipped v2.2.3 remains affected until a newer release.",
+        "verification_summary_zh": "已核验提交 f59df558：plantuml 默认展示源码视图（含流式语言切换），打开预览先提示将发送至 www.plantuml.com 且未点击前零外发；已发版 v2.2.3 仍受影响，待下个正式版本包含。"
+      },
+      "resolution_evidence_url": null,
+      "observed": {
+        "github_state": "closed",
+        "state_reason": "completed",
+        "labels": [
+          "bug",
+          "needs-review",
+          "p2",
+          "ui-ux"
+        ],
+        "closed_at": "2026-11-27T13:48:13Z",
+        "linked_prs": [
+          {
+            "number": 25582,
+            "url": "https://github.com/CherryHQ/cherry-studio/pull/25582",
+            "state": "closed",
+            "merged": true,
+            "merge_commit_sha": "f59df558c95c7e571c45cd39d604250abce2ac6d",
+            "author_association": "CONTRIBUTOR"
+          }
+        ]
+      },
+      "events": [
+        {
+          "date": "2026-11-27",
+          "kind": "filed",
+          "url": "https://github.com/CherryHQ/cherry-studio/issues/25579",
+          "commit": null,
+          "summary_en": "Filed upstream bug issue referencing 62867d8f and v2.2.3.",
+          "summary_zh": "基于 62867d8f 与 v2.2.3 提交上游缺陷 Issue。"
+        },
+        {
+          "date": "2026-11-27",
+          "kind": "decision",
+          "url": "https://github.com/CherryHQ/cherry-studio/issues/25579#issuecomment-7212668306",
+          "commit": null,
+          "summary_en": "Official triage recorded non-egress acceptance criteria while PR #25582 was open.",
+          "summary_zh": "官方分诊记录决策；社区贡献者已提交 PR #25582。"
+        },
+        {
+          "date": "2026-11-27",
+          "kind": "fix_merged",
+          "url": "https://github.com/CherryHQ/cherry-studio/pull/25582",
+          "commit": "f59df558c95c7e571c45cd39d604250abce2ac6d",
+          "summary_en": "PR #25582 merged to main 7.5 hours after filing; issue closed as completed.",
+          "summary_zh": "提单 7.5 小时后 PR #25582 合入 main，Issue 标记 completed 关闭。"
+        },
+        {
+          "date": "2026-11-27",
+          "kind": "verified_main",
+          "url": "https://github.com/CherryHQ/cherry-studio/commit/f59df558c95c7e571c45cd39d604250abce2ac6d",
+          "commit": "f59df558c95c7e571c45cd39d604250abce2ac6d",
+          "summary_en": "Verified source diff at f59df558 eliminates zero-click PlantUML egress via source-view default and per-mount explicit remote consent gate (remote renderer remains opt-in; awaiting release beyond v2.2.3).",
+          "summary_zh": "源码核验 f59df558 通过默认源码视图与显式远端提示门禁消除零点击外发（远端渲染改为显式点击触发，待新版本发布）。"
+        }
+      ]
+    },
+    {
+      "id": "cherry-studio-25581",
+      "origin": "audit_filed",
+      "snapshot": "2026-11-27-62867d8f.md",
+      "finding_ids": [
+        "F4"
+      ],
+      "resolved_findings": [],
+      "url": "https://github.com/CherryHQ/cherry-studio/issues/25581",
+      "ref": "#25581",
+      "title_en": "Manual MCP import sets isTrusted: true and connects on generic Confirm",
+      "title_zh": "手动导入 MCP 点普通确认即默认 isTrusted: true 并触发连接",
+      "latent_days": null,
+      "filed_at": "2026-11-27T06:19:12Z",
+      "status": "acknowledged",
+      "maintainer_response": {
+        "replied": true,
+        "first_reply_at": "2026-11-27T06:22:58Z",
+        "first_decision_at": "2026-11-27T06:47:31Z",
+        "actor": "cherry-issue-label[bot]",
+        "summary_en": "Verified every cited line in 4m; triage card decided in 28m to align manual import with protocol installs (isTrusted: false + explicit trust prompt).",
+        "summary_zh": "4 分钟内核实全部代码行，28 分钟内决策卡拍板对齐协议安装（先写 isTrusted: false，显式确认信任后再连接）。"
+      },
+      "remediation": {
+        "pr_url": null,
+        "pr_author_type": null,
+        "fix_commit": null,
+        "merged_at": null,
+        "fix_release": null,
+        "verified_at": null,
+        "verified_snapshot": null,
+        "verification_summary_en": null,
+        "verification_summary_zh": null
+      },
+      "resolution_evidence_url": null,
+      "observed": {
+        "github_state": "open",
+        "state_reason": null,
+        "labels": [
+          "bug",
+          "p3"
+        ],
+        "closed_at": null,
+        "linked_prs": []
+      },
+      "events": [
+        {
+          "date": "2026-11-27",
+          "kind": "filed",
+          "url": "https://github.com/CherryHQ/cherry-studio/issues/25581",
+          "commit": null,
+          "summary_en": "Filed upstream bug issue referencing 62867d8f.",
+          "summary_zh": "基于 62867d8f 提交上游缺陷 Issue。"
+        },
+        {
+          "date": "2026-11-27",
+          "kind": "decision",
+          "url": "https://github.com/CherryHQ/cherry-studio/issues/25581#issuecomment-7211849917",
+          "commit": null,
+          "summary_en": "Official triage card recorded decision to initialize manual MCP imports as isTrusted: false / isActive: false pending explicit trust confirmation.",
+          "summary_zh": "官方决策卡拍板：手动导入 MCP 改为默认 isTrusted: false / isActive: false，须显式确认信任。"
+        }
+      ]
+    },
+    {
+      "id": "cherry-studio-25580",
+      "origin": "audit_filed",
+      "snapshot": "2026-11-27-62867d8f.md",
+      "finding_ids": [
+        "F1",
+        "F3"
+      ],
+      "resolved_findings": [],
+      "url": "https://github.com/CherryHQ/cherry-studio/issues/25580",
+      "ref": "#25580",
+      "title_en": "CN raw accountId + US PostHog profiling vs. anonymous copy & undisclosed IP lookup",
+      "title_zh": "国内版原始 accountId 发美国 PostHog 画像与未披露第三方 IP 定位",
+      "latent_days": null,
+      "filed_at": "2026-11-27T06:19:10Z",
+      "status": "triaged",
+      "maintainer_response": {
+        "replied": false,
+        "first_reply_at": null,
+        "first_decision_at": null,
+        "actor": null,
+        "summary_en": "Labeled bug, p2, needs-review by triage bot 3m after filing; no written decision or PR yet.",
+        "summary_zh": "提单 3 分钟后由分诊机器人打上 bug、p2、needs-review 标签，尚无书面回复或修复 PR。"
+      },
+      "remediation": {
+        "pr_url": null,
+        "pr_author_type": null,
+        "fix_commit": null,
+        "merged_at": null,
+        "fix_release": null,
+        "verified_at": null,
+        "verified_snapshot": null,
+        "verification_summary_en": null,
+        "verification_summary_zh": null
+      },
+      "resolution_evidence_url": null,
+      "observed": {
+        "github_state": "open",
+        "state_reason": null,
+        "labels": [
+          "bug",
+          "needs-review",
+          "p2"
+        ],
+        "closed_at": null,
+        "linked_prs": []
+      },
+      "events": [
+        {
+          "date": "2026-11-27",
+          "kind": "filed",
+          "url": "https://github.com/CherryHQ/cherry-studio/issues/25580",
+          "commit": null,
+          "summary_en": "Filed upstream bug issue covering F1 and F3 at 62867d8f.",
+          "summary_zh": "基于 62867d8f 提交覆盖 F1 与 F3 的上游 Issue。"
+        },
+        {
+          "date": "2026-11-27",
+          "kind": "triaged",
+          "url": "https://github.com/CherryHQ/cherry-studio/issues/25580",
+          "commit": null,
+          "summary_en": "Auto-labeled bug, p2, needs-review; awaiting maintainer decision.",
+          "summary_zh": "已标记 bug、p2、needs-review，等待维护者决定。"
+        }
+      ]
+    }
+  ],
+  "private_disclosures": [
+    {
+      "id": "cvd-1",
+      "snapshot": "2026-11-27-62867d8f.md",
+      "reported_at": "2026-11-27",
+      "window_days": 90,
+      "status": "embargoed",
+      "advisory_url": null,
+      "fix_commit": null,
+      "fix_release": null,
+      "disclosed_at": null,
+      "summary_en": "1 withheld security finding under 90-day coordinated private disclosure (details omitted).",
+      "summary_zh": "1 项处于 90 天负责任私密披露期的暂隐安全问题（细节暂隐）。"
+    }
+  ]
+}

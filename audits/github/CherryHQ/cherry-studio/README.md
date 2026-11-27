@@ -3,17 +3,38 @@
 # CherryHQ/cherry-studio
 
 - **Upstream:** [https://github.com/CherryHQ/cherry-studio](https://github.com/CherryHQ/cherry-studio)
-- **Latest Revision:** `v2.2.3` (`62867d8f`) · **Audited:** 2026-11-27
-- **Rating:** `H3` (`h3_scope=primary`) / `R3` · **Evidence:** `E3+D` · **Verdict:** **`Isolate`**
+- **Latest Audited Revision:** `v2.2.3` (`62867d8f`) · **Audited:** 2026-11-27
+- **Current Rating:** `H3` (`h3_scope=primary`) / `R3` · **Evidence:** `E3+D` · **Verdict:** **`Isolate`**
+- **Upstream Response Posture:** **Active Remediation** (积极修复中) · **Last Checked:** `2026-11-27` · **Latest Upstream Release:** `v2.2.3` (2026-11-19)
 - **Category:** `desktop-client` · **Tags:** `person-profile-tracking`, `region-split-telemetry`, `zero-click-diagram-egress`, `telemetry-opt-out-gap`, `undisclosed-ip-geolocation`, `mcp-auto-trust`
 - **Headline (EN):** CN-only accountId + US PostHog profiling vs. anonymous policy, 431-day zero-click PlantUML egress, opt-out Client-Id/IP & MCP auto-trust.
 - **核心摘要 (ZH):** 国内版传原始accountId发美国PostHog画像（国际版匿名）、431天零点击外发PlantUML图源、关隐私仍发Client-Id与第三方IP定位、手动导MCP默认授信。
+- **Machine-Readable Tracking Ledger:** [tracking.json](./tracking.json)
 
-## Upstream Issues Tracked
+## Upstream Remediation & Issue Tracking
 
-- [#25580](https://github.com/CherryHQ/cherry-studio/issues/25580) (`open`): F1/F3: CN-only raw accountId + PostHog profiling vs. anonymous copy & undisclosed IP geolocation
-- [#25579](https://github.com/CherryHQ/cherry-studio/issues/25579) (`open`): F2: plantuml chat blocks auto-send full diagram source to www.plantuml.com without click or disclosure
-- [#25581](https://github.com/CherryHQ/cherry-studio/issues/25581) (`open`): F4: manual MCP import sets isTrusted: true and triggers immediate tool refresh on generic Confirm
+| Issue | Origin | Findings | Status | Response / Turnaround | Fix Commit & Release | Notes |
+|---|---|---|---|---|---|---|
+| [#25579](https://github.com/CherryHQ/cherry-studio/issues/25579) | `audit_filed` | `F2` | `verified_main` | Replied by `cherry-issue-label[bot]` (1.3h)<br>Merged in **7.5h** | [PR #25582](https://github.com/CherryHQ/cherry-studio/pull/25582) (contributor)<br>[`f59df558`](https://github.com/CherryHQ/cherry-studio/commit/f59df558c95c7e571c45cd39d604250abce2ac6d)<br>Unreleased (`main` only) | Verified commit f59df558: plantuml defaults to source view (including streamed transitions) and PlantUmlPreview gates remote www.plantuml.com fetches behind an explicit host-disclosing click per mount; shipped v2.2.3 remains affected until a newer release. |
+| [#25581](https://github.com/CherryHQ/cherry-studio/issues/25581) | `audit_filed` | `F4` | `acknowledged` | Replied by `cherry-issue-label[bot]` (4m) | None yet | Verified every cited line in 4m; triage card decided in 28m to align manual import with protocol installs (isTrusted: false + explicit trust prompt). |
+| [#25580](https://github.com/CherryHQ/cherry-studio/issues/25580) | `audit_filed` | `F1`, `F3` | `triaged` | No maintainer reply (0d as of 2026-11-27) | None yet | Labeled bug, p2, needs-review by triage bot 3m after filing; no written decision or PR yet. |
+
+## Private Coordinated Disclosures
+
+| ID | Reported | Window | Status | Summary |
+|---|---|---|---|---|
+| `cvd-1` | `2026-11-27` | 90d | `embargoed` | 1 withheld security finding under 90-day coordinated private disclosure (details omitted). |
+
+## Upstream Timeline
+
+- `2026-11-27` · #25581 · `filed`: Filed upstream bug issue referencing 62867d8f. ([link](https://github.com/CherryHQ/cherry-studio/issues/25581))
+- `2026-11-27` · #25581 · `decision`: Official triage card recorded decision to initialize manual MCP imports as isTrusted: false / isActive: false pending explicit trust confirmation. ([link](https://github.com/CherryHQ/cherry-studio/issues/25581#issuecomment-7211849917))
+- `2026-11-27` · #25580 · `filed`: Filed upstream bug issue covering F1 and F3 at 62867d8f. ([link](https://github.com/CherryHQ/cherry-studio/issues/25580))
+- `2026-11-27` · #25580 · `triaged`: Auto-labeled bug, p2, needs-review; awaiting maintainer decision. ([link](https://github.com/CherryHQ/cherry-studio/issues/25580))
+- `2026-11-27` · #25579 · `filed`: Filed upstream bug issue referencing 62867d8f and v2.2.3. ([link](https://github.com/CherryHQ/cherry-studio/issues/25579))
+- `2026-11-27` · #25579 · `decision`: Official triage recorded non-egress acceptance criteria while PR #25582 was open. ([link](https://github.com/CherryHQ/cherry-studio/issues/25579#issuecomment-7212668306))
+- `2026-11-27` · #25579 · `fix_merged`: PR #25582 merged to main 7.5 hours after filing; issue closed as completed. ([`f59df558`](https://github.com/CherryHQ/cherry-studio/commit/f59df558c95c7e571c45cd39d604250abce2ac6d))
+- `2026-11-27` · #25579 · `verified_main`: Verified source diff at f59df558 eliminates zero-click PlantUML egress via source-view default and per-mount explicit remote consent gate (remote renderer remains opt-in; awaiting release beyond v2.2.3). ([`f59df558`](https://github.com/CherryHQ/cherry-studio/commit/f59df558c95c7e571c45cd39d604250abce2ac6d))
 
 ## Audit Snapshots (Newest First)
 

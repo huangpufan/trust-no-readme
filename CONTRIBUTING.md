@@ -46,12 +46,13 @@ python3 tools/new_audit.py \
 - Anchor every finding with clickable GitHub permalinks at the exact pinned SHA and short verbatim source excerpts (5–15 lines).
 - If a finding cites a pinned companion repository (for example, a companion dependency package), declare it in frontmatter `companion_repos` (`alias=forge:owner/repo@<40-hex>`) and cite files as `alias:path/to/file.py:10-20` so CI verifies them too.
 - Keep `headline_en` ≤ 140 chars and `headline_zh` ≤ 90 chars.
-- If you filed actionable upstream bug/doc-mismatch issues (following [`templates/upstream-issue.md`](./templates/upstream-issue.md)), record them in `upstream_issues`.
+- If you filed actionable upstream bug/doc-mismatch issues (following [`templates/upstream-issue.md`](./templates/upstream-issue.md)), record them in `audits/<forge>/<owner>/<repo>/tracking.json` ([schema](./data/schema/tracking.schema.json)). Never overwrite frozen historical snapshots just to update issue status.
 
 ### Step 4: Regenerate Indexes & Run Mechanical Verification
-Never hand-edit `data/catalog.json`, per-project `README.md`, or the `<!-- CATALOG:BEGIN -->`…`<!-- CATALOG:END -->` blocks in the root READMEs.
+Never hand-edit `data/catalog.json`, per-project `README.md`, or the `<!-- IMPACT:BEGIN -->`…`<!-- IMPACT:END -->` / `<!-- CATALOG:BEGIN -->`…`<!-- CATALOG:END -->` blocks in the root READMEs.
 
 ```bash
+python3 tools/sync_issues.py --format json   # optional: observe live GitHub issue states
 python3 tools/build_index.py
 python3 tools/build_index.py --check
 python3 tools/validate.py --verify-upstream
@@ -64,8 +65,8 @@ python3 tools/validate.py --verify-upstream
 
 Every Pull Request is automatically verified by [`.github/workflows/ci.yml`](./.github/workflows/ci.yml):
 1. **Tooling unit tests** (`python3 -m unittest discover -s tests -v`).
-2. **Frontmatter schema & filename parity** against [`data/schema/audit-frontmatter.schema.json`](./data/schema/audit-frontmatter.schema.json) (rejects `disclosure: embargoed`, malformed SHAs, oversized headlines, and unfilled template placeholders).
-3. **Structure & wording hygiene**: required sections, `F1..Fn` table-to-detail parity, zero banned EN/ZH intent words outside quotes, zero local machine path leaks.
-4. **Mechanical upstream verification**: CI inertly fetches the exact pinned SHA (and every declared `companion_repos` SHA) read-only and verifies every cited `file:line`, permalink SHA, and adjacent code identifier against real upstream source code.
+2. **Frontmatter & tracking schema parity** against [`data/schema/audit-frontmatter.schema.json`](./data/schema/audit-frontmatter.schema.json) and [`data/schema/tracking.schema.json`](./data/schema/tracking.schema.json) (rejects `disclosure: embargoed`, unproved fix claims, embargoed CVD leaks, malformed SHAs, oversized headlines, and unfilled template placeholders).
+3. **Structure & wording hygiene**: required sections, `F1..Fn` table-to-detail and `tracking.json` cross-reference parity, zero banned EN/ZH intent words outside quotes, zero local machine path leaks.
+4. **Mechanical upstream verification**: CI inertly fetches the exact pinned SHA, declared `companion_repos` SHAs, and every claimed `fix_commit` in `tracking.json` read-only and verifies every cited `file:line`, permalink SHA, adjacent code identifier, and upstream fix commit.
 5. **Generated index freshness** (`python3 tools/build_index.py --check`).
-6. **PR scope hygiene**: audit PRs should touch only `audits/` and regenerated indexes unless explicitly intended as a tooling change.
+6. **PR scope hygiene**: audit and tracking PRs may add new snapshots or update `tracking.json` / `responses.md` and regenerated indexes, and must never overwrite existing historical snapshots or touch protected `tools/` / `.github/` / `data/schema/` files unless explicitly labeled as a tooling change.

@@ -3,17 +3,29 @@
 # browser-use/browser-use
 
 - **Upstream:** [https://github.com/browser-use/browser-use](https://github.com/browser-use/browser-use)
-- **Latest Revision:** `1.0.8` (`94784c1f`) · **Audited:** 2026-11-26
-- **Rating:** `H4` (`h3_scope=primary`) / `R3` · **Evidence:** `E3+D` · **Verdict:** **`Isolate`**
+- **Latest Audited Revision:** `1.0.8` (`94784c1f`) · **Audited:** 2026-11-26
+- **Current Rating:** `H4` (`h3_scope=primary`) / `R3` · **Evidence:** `E3+D` · **Verdict:** **`Isolate`**
+- **Upstream Response Posture:** **Community PRs Only** (仅社区 PR·维护者未回复) · **Last Checked:** `2026-11-27` · **Latest Upstream Release:** `1.0.9` (2026-11-26)
 - **Category:** `browser-agent` · **Tags:** `telemetry-opt-out-bypass`, `pinned-dependency-leak`, `prompt-driven-feedback`, `person-profile-tracking`, `silent-policy-removal`, `host-code-execution`, `personal-browser-profile`, `temp-file-retention`
 - **Headline (EN):** 141-day raw script/password telemetry (PR #733 rejected), 46s README wipe, coding-agent opt-out bypass & silent --help tracking.
 - **核心摘要 (ZH):** 持续141天上传脚本与密码（拒合PR#733）、46秒删光README遥测节、借编程Agent绕过关闭开关、连--help也开人物画像。
+- **Machine-Readable Tracking Ledger:** [tracking.json](./tracking.json)
 
-## Upstream Issues Tracked
+## Upstream Remediation & Issue Tracking
 
-- [#6541](https://github.com/browser-use/browser-use/issues/6541) (`open`): F1/F4: pyproject.toml pins browser-harness==0.1.13 & CLI forwards $process_person_profile: true
-- [#6542](https://github.com/browser-use/browser-use/issues/6542) (`open`): F5: ProductTelemetry._at_exit() omits job.consent check after runtime opt-out
-- [#6467](https://github.com/browser-use/browser-use/issues/6467) (`existing`): F3: skill prompt sends feedback without asking user
+| Issue | Origin | Findings | Status | Response / Turnaround | Fix Commit & Release | Notes |
+|---|---|---|---|---|---|---|
+| [#6541](https://github.com/browser-use/browser-use/issues/6541) | `audit_filed` | `F1`, `F4` | `pr_open` | No maintainer reply (1d as of 2026-11-27) | [PR #6545](https://github.com/browser-use/browser-use/pull/6545) (community) | External contributor opened partial PR #6545 (CLI person-profile only); release 1.0.9 shipped without addressing #6541 and maintainers have not replied yet. |
+| [#6542](https://github.com/browser-use/browser-use/issues/6542) | `audit_filed` | `F5` | `pr_open` | No maintainer reply (1d as of 2026-11-27) | [PR #6549](https://github.com/browser-use/browser-use/pull/6549) (community) | External contributor opened PR #6549; release 1.0.9 shipped without addressing #6542 and maintainers have not replied yet. |
+| [#6467](https://github.com/browser-use/browser-use/issues/6467) | `pre_existing` | `F3` | `pr_open` | No maintainer reply (9d as of 2026-11-27) | [PR #6470](https://github.com/browser-use/browser-use/pull/6470) (contributor) | Pre-existing community issue open since 2026-11-18 with external PR #6470 unmerged; no maintainer response recorded. |
+
+## Upstream Timeline
+
+- `2026-11-27` · #6542 · `pr_opened`: Community contributor opened PR #6549 dropping queued non-consent events on runtime disable; awaiting maintainer review. ([link](https://github.com/browser-use/browser-use/pull/6549))
+- `2026-11-26` · #6542 · `filed`: Filed upstream bug issue covering F5 at 94784c1f / 1.0.8. ([link](https://github.com/browser-use/browser-use/issues/6542))
+- `2026-11-26` · #6541 · `filed`: Filed upstream bug issue covering F1 and F4 at 94784c1f / 1.0.8. ([link](https://github.com/browser-use/browser-use/issues/6541))
+- `2026-11-26` · #6541 · `pr_opened`: Community contributor opened PR #6545 targeting CLI person-profile forwarding; awaiting maintainer review. ([link](https://github.com/browser-use/browser-use/pull/6545))
+- `2026-11-18` · #6467 · `filed`: Pre-existing community issue opened requesting user confirmation before skill feedback submission. ([link](https://github.com/browser-use/browser-use/issues/6467))
 
 ## Audit Snapshots (Newest First)
 
