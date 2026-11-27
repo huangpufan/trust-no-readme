@@ -1,0 +1,80 @@
+name: Upstream Issue Observer
+
+on:
+  schedule:
+    # Weekly read-only upstream observation every Monday at 02:17 UTC
+    - cron: "17 2 * * 1"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Write step summary only without creating or editing triage issues"
+        required: false
+        type: boolean
+        default: false
+      repo:
+        description: "Optional single owner/repo filter (never modifies the global rolling issue)"
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: upstream-issue-observer
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    if: github.event_name == 'workflow_dispatch' || github.repository == 'huangpufan/trust-no-readme'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout trust-no-readme
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.12"
+
+      - name: Run read-only upstream issue observer
+        id: sync
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_REPO: ${{ inputs.repo }}
+        run: |
+          set +e
+          ARGS=(tools/sync_issues.py --format json)
+          if [ -n "$INPUT_REPO" ]; then
+            ARGS+=(--repo "$INPUT_REPO")
+          fi
+          python3 "${ARGS[@]}" > "$RUNNER_TEMP/sync_report.json"
+          SYNC_RC=$?
+          echo "exit_code=$SYNC_RC" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Publish rolling triage digest and step summary
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_SHA: ${{ github.sha }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          ARGS=(tools/publish_sync_digest.py --input "$RUNNER_TEMP/sync_report.json" --require-default-branch)
+          if [ "$INPUT_DRY_RUN" = "true" ]; then
+            ARGS+=(--dry-run)
+          fi
+          python3 "${ARGS[@]}"
+
+      - name: Fail job if upstream observation had partial API errors
+        env:
+          SYNC_EXIT_CODE: ${{ steps.sync.outputs.exit_code }}
+        run: |
+          if [ "${SYNC_EXIT_CODE:-1}" -ne 0 ]; then
+            echo "Upstream issue observer exited with code ${SYNC_EXIT_CODE:-1} (partial failure or error)." >&2
+            exit "${SYNC_EXIT_CODE:-1}"
+          fi

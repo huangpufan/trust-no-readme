@@ -63,7 +63,7 @@ jobs:
           set -euo pipefail
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             BASE="origin/${{ github.base_ref }}"
-            CORE_CHANGED=$(git diff --name-only "$BASE...HEAD" -- tools/ data/schema/ .github/workflows/ci.yml)
+            CORE_CHANGED=$(git diff --name-only "$BASE...HEAD" -- tools/ data/schema/ .github/workflows/)
             if [ -n "$CORE_CHANGED" ]; then
               python3 tools/validate.py --verify-upstream
             else

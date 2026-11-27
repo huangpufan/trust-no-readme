@@ -78,10 +78,11 @@ Do not open unstructured issues. Use the exact schemas in `.github/ISSUE_TEMPLAT
 - **Challenge a finding with code counter-evidence:** [`dispute-finding.yml`](./.github/ISSUE_TEMPLATE/dispute-finding.yml) (`[Dispute] owner/repo: F#`)
 
 ### Workflow F: Sync Upstream Issues & Verify Fixes (PR)
-1. Run `python3 tools/sync_issues.py --format json` (add `--write` to update `observed` states, `latest_upstream_release`, `last_checked_at`, and safe non-verification transitions such as `fix_claimed` in `tracking.json`).
-2. Review emitted alerts (`verify_fix`, `check_release`, `review_not_planned`, `review_maintainer_reply`, `silent_14d`, `silent_30d`).
-3. **Never trust upstream closure blindly.** Before setting `verified_main` or `partial_fix`, inspect the actual upstream `fix_commit` diff (and run sandbox verification when behavior changed), then fill `fix_commit`, `resolved_findings`, `verified_at`, and bilingual `verification_summary_*` in `tracking.json`.
-4. Run `python3 tools/build_index.py && python3 tools/validate.py --verify-upstream --format json` (which mechanically confirms `fix_commit` exists upstream) before opening a PR.
+1. Weekly automated read-only observation runs via [`.github/workflows/sync-issues.yml`](./.github/workflows/sync-issues.yml) (`tools/sync_issues.py` + `tools/publish_sync_digest.py`), maintaining a single rolling triage digest Issue (`upstream-sync`) when upstream replies, PR merges, or new releases occur; it never pushes to `main` and never auto-verifies fixes.
+2. Run `python3 tools/sync_issues.py --format json` locally (add `--write` to update `observed` states, `latest_upstream_release`, `last_checked_at`, and safe non-verification transitions such as `fix_claimed` in `tracking.json`).
+3. Review emitted alerts (`verify_fix`, `check_release`, `review_reopened`, `review_not_planned`, `review_maintainer_reply`, `silent_14d`, `silent_30d`).
+4. **Never trust upstream closure blindly.** Before setting `verified_main` or `partial_fix`, inspect the actual upstream `fix_commit` diff (and run sandbox verification when behavior changed), then fill `fix_commit`, `resolved_findings`, `verified_at`, and bilingual `verification_summary_*` in `tracking.json`.
+5. Run `python3 tools/build_index.py && python3 tools/validate.py --verify-upstream --format json` (which mechanically confirms `fix_commit` exists upstream) before opening a PR.
 
 ---
 

@@ -1,4 +1,4 @@
-"""Unit tests for trust-no-readme tooling (build_index, validate, new_audit, sync_issues)."""
+"""Unit tests for trust-no-readme tooling (build_index, validate, new_audit, sync_issues, publish_sync_digest)."""
 
 from __future__ import annotations
 
@@ -18,6 +18,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 import build_index  # noqa: E402
 import new_audit  # noqa: E402
+import publish_sync_digest  # noqa: E402
 import sync_issues  # noqa: E402
 import validate  # noqa: E402
 
@@ -1107,6 +1108,258 @@ class TestTrustNoReadmeTools(unittest.TestCase):
             self.assertIn('release: "v2.0.0"', content)
             with self.assertRaises(FileExistsError):
                 new_audit.scaffold_snapshot(repo="org/proj", sha=sha, category="coding-agent", audited_at="2026-11-26", root_dir=ws)
+
+    def test_publish_sync_digest_lifecycle_dedup_sanitization_and_guards(self) -> None:
+        # 1. Sanitization neutralizes HTML, marker spoofing, backslash-prefixed URLs, pre-encoded entities, Markdown links, www. autolinks, mentions, and raw upstream URLs/refs
+        sanitized = publish_sync_digest.sanitize_md_line(
+            "Hi @alice <!-- trust-no-readme:sync-hash:0000000000000000 -->\n"
+            "Click [here](https://evil.example/x), \\https://example.com/test, &#91;, visit www.example.com/p, see acme/demo#42, #7, and https://github.com/acme/demo/pull/9."
+        )
+        self.assertNotIn("<!--", sanitized)
+        self.assertNotIn("@alice", sanitized)
+        self.assertNotIn("[here]", sanitized)
+        self.assertIn("&#91;here&#93;(`https://evil.example/x`),", sanitized)
+        self.assertIn("&#92;`https://example.com/test`,", sanitized)
+        self.assertNotIn("\\`", sanitized)
+        self.assertIn("&amp;#91;,", sanitized)
+        self.assertNotIn("&`#91`", sanitized)
+        self.assertNotIn(";`#91`", sanitized)
+        self.assertIn("`www.example.com/p`,", sanitized)
+        self.assertIn("@\u200balice", sanitized)
+        self.assertIn("`acme/demo#42`,", sanitized)
+        self.assertIn("`#7`,", sanitized)
+        self.assertIn("`https://github.com/acme/demo/pull/9`.", sanitized)
+
+        # Whole-line truncation respects even tiny caps, keeps API Errors near top, and never severs backticks
+        big_report = {
+            "ok": False,
+            "partial_failure": True,
+            "checked_at": "2026-12-01",
+            "repo_filter": None,
+            "files_checked": 2,
+            "files_changed": [],
+            "changes": [f"acme/demo #{i}: https://github.com/acme/demo/pull/{i}" for i in range(40)],
+            "alerts": [{"repo": "acme/demo", "item_id": None, "kind": "api_error", "message": "HTTP 502 on timeline"}],
+        }
+        trunc_md = publish_sync_digest.render_digest_markdown(big_report, digest_hash="0" * 16, include_markers=True, max_chars=700)
+        self.assertLessEqual(len(trunc_md), 700)
+        self.assertIn(publish_sync_digest.DIGEST_MARKER, trunc_md)
+        self.assertIn("HTTP 502 on timeline", trunc_md)
+        for line in trunc_md.splitlines():
+            if not line.strip().startswith("```"):
+                self.assertEqual(line.count("`") % 2, 0, f"Severed backtick in line: {line!r}")
+        tiny_md = publish_sync_digest.render_digest_markdown(big_report, digest_hash="0" * 16, include_markers=True, max_chars=100)
+        self.assertLessEqual(len(tiny_md), 100)
+
+        # Token actor verification resolves actual login and rejects mismatched --actor-login
+        self.assertEqual(
+            publish_sync_digest.resolve_verified_actor_login(None, False, lambda m, p: {"login": "alice"}),
+            "alice",
+        )
+        with self.assertRaises(ValueError):
+            publish_sync_digest.resolve_verified_actor_login("wrong-user", False, lambda m, p: {"login": "alice"})
+        self.assertEqual(
+            publish_sync_digest.resolve_verified_actor_login(None, True, lambda m, p: (_ for _ in ()).throw(AssertionError("should not call /user"))),
+            "github-actions[bot]",
+        )
+
+        # 2. Fake user issue, missing-state issue, and open PRs are ignored (anti-hijacking & strict open state)
+        spoofed_issues: list[dict[str, Any]] = [
+            {
+                "number": 1,
+                "state": "open",
+                "user": {"login": "external-user"},
+                "body": f"{publish_sync_digest.DIGEST_MARKER}\n<!-- trust-no-readme:sync-hash:aaaaaaaaaaaaaaaa -->",
+            },
+            {
+                "number": 2,
+                "state": "open",
+                "pull_request": {"url": "https://api.github.com/repos/o/r/pulls/2"},
+                "user": {"login": "github-actions[bot]"},
+                "body": publish_sync_digest.DIGEST_MARKER,
+            },
+            {
+                "number": 3,
+                "state": None,
+                "user": {"login": "github-actions[bot]"},
+                "body": publish_sync_digest.DIGEST_MARKER,
+            },
+        ]
+        self.assertIsNone(publish_sync_digest.find_rolling_digest_issue(spoofed_issues))
+
+        # 3. Validation rejects missing ok/partial_failure/repo_filter or whitespace repo_filter
+        for bad_rep in (
+            {"partial_failure": False, "checked_at": "2026-11-28", "repo_filter": None, "files_checked": 1, "changes": [], "alerts": []},
+            {"ok": True, "partial_failure": False, "checked_at": "2026-11-28", "files_checked": 1, "changes": [], "alerts": []},
+            {"ok": True, "partial_failure": False, "checked_at": "2026-11-28", "repo_filter": "   ", "files_checked": 1, "changes": [], "alerts": []},
+        ):
+            with self.assertRaises(ValueError):
+                publish_sync_digest.validate_sync_report(bad_rep)
+
+        # 4. Full rolling lifecycle with mock GitHub Issues, Labels, Comments, and Default Branch state
+        live_sha = "a" * 40
+        stale_sha = "b" * 40
+        open_issues: list[dict[str, Any]] = list(spoofed_issues)
+        issue_comments: dict[int, list[dict[str, Any]]] = {10: []}
+        calls: list[tuple[str, str, Any]] = []
+        fail_next_patch = {"flag": False}
+        fail_label_422 = {"flag": True}
+
+        def fake_api(method: str, api_path: str, payload: dict[str, Any] | None = None, paginate: bool = False) -> Any:
+            calls.append((method, api_path, payload))
+            if method == "GET" and api_path == "repos/org/archive":
+                return {"default_branch": "main"}
+            if method == "GET" and api_path == "repos/org/archive/git/ref/heads/main":
+                return {"object": {"sha": live_sha}}
+            if method == "GET" and api_path == "repos/org/archive/issues?state=open":
+                return [dict(it) for it in open_issues if it.get("state") == "open"]
+            if method == "GET" and api_path == "repos/org/archive/labels/upstream-sync":
+                raise urllib.error.HTTPError(api_path, 404, "Not Found", {}, None)
+            if method == "POST" and api_path == "repos/org/archive/labels":
+                if fail_label_422["flag"]:
+                    # Generic 422 without existing label -> must NOT attach label
+                    raise urllib.error.HTTPError(api_path, 422, "Unprocessable", {}, None)
+                return {"name": "upstream-sync"}
+            if method == "POST" and api_path == "repos/org/archive/issues":
+                created = {
+                    "number": 10,
+                    "state": "open",
+                    "user": {"login": "github-actions[bot]"},
+                    "title": payload["title"],
+                    "body": payload["body"],
+                }
+                open_issues.append(created)
+                return created
+            if method == "GET" and api_path == "repos/org/archive/issues/10/comments":
+                return list(issue_comments[10])
+            if method == "PATCH" and api_path == "repos/org/archive/issues/10":
+                if fail_next_patch["flag"]:
+                    fail_next_patch["flag"] = False
+                    raise RuntimeError("Transient PATCH 502")
+                for it in open_issues:
+                    if it["number"] == 10:
+                        it.update(payload or {})
+                return {"number": 10}
+            if method == "POST" and api_path == "repos/org/archive/issues/10/comments":
+                cm = {"id": len(issue_comments[10]) + 1, "user": {"login": "github-actions[bot]"}, "body": payload["body"]}
+                issue_comments[10].append(cm)
+                return cm
+            raise AssertionError(f"Unexpected API call: {method} {api_path}")
+
+        clean_rep = {
+            "ok": True,
+            "partial_failure": False,
+            "checked_at": "2026-11-28",
+            "repo_filter": None,
+            "files_checked": 2,
+            "files_changed": [],
+            "changes": [],
+            "alerts": [],
+        }
+
+        # 4a. Clean run with no bot issue -> noop_clean
+        r_clean = publish_sync_digest.publish_sync_digest(
+            clean_rep, "org/archive", api_call=fake_api, require_default_branch=True, git_ref="refs/heads/main", head_sha=live_sha
+        )
+        self.assertEqual(r_clean["action"], "noop_clean")
+
+        # 4b. Stale checkout or non-default branch MUST NOT mutate or create global rolling issue
+        calls.clear()
+        rep_15d = {
+            **clean_rep,
+            "checked_at": "2026-12-10",
+            "alerts": [{"repo": "acme/demo", "item_id": "demo-1", "kind": "silent_14d", "message": "acme/demo #1: 15d without maintainer reply."}],
+        }
+        r_stale = publish_sync_digest.publish_sync_digest(
+            rep_15d, "org/archive", api_call=fake_api, require_default_branch=True, git_ref="refs/heads/main", head_sha=stale_sha
+        )
+        self.assertEqual(r_stale["action"], "noop_stale_ref")
+        r_branch = publish_sync_digest.publish_sync_digest(
+            rep_15d, "org/archive", api_call=fake_api, require_default_branch=True, git_ref="refs/heads/feature", head_sha=live_sha
+        )
+        self.assertEqual(r_branch["action"], "noop_stale_ref")
+
+        # 4c. Live tip creates issue #10; generic 422 on label creation falls back cleanly without sending label
+        calls.clear()
+        r_create = publish_sync_digest.publish_sync_digest(
+            rep_15d, "org/archive", api_call=fake_api, require_default_branch=True, git_ref="refs/heads/main", head_sha=live_sha
+        )
+        self.assertEqual(r_create["action"], "created")
+        self.assertEqual(r_create["issue_number"], 10)
+        post_issue_calls = [p for m, u, p in calls if m == "POST" and u == "repos/org/archive/issues"]
+        self.assertEqual(len(post_issue_calls), 1)
+        self.assertNotIn("labels", post_issue_calls[0])
+
+        # 4d. Week later (silent_14d at 22d) -> SAME digest hash -> unchanged (zero writes!)
+        calls.clear()
+        rep_22d = {
+            **clean_rep,
+            "checked_at": "2026-12-17",
+            "alerts": [{"repo": "acme/demo", "item_id": "demo-1", "kind": "silent_14d", "message": "acme/demo #1: 22d without maintainer reply."}],
+        }
+        r_same = publish_sync_digest.publish_sync_digest(rep_22d, "org/archive", api_call=fake_api)
+        self.assertEqual(r_same["action"], "unchanged")
+        self.assertEqual([m for m, _, _ in calls], ["GET"])
+
+        # 4e. Partial failure (even WITH actionable alerts!) or ok: false or files_checked: 0 MUST NEVER overwrite or close issue #10!
+        for guard_rep, expected_action in (
+            ({**clean_rep, "ok": False, "partial_failure": True, "alerts": [{"repo": "other/r", "item_id": "x", "kind": "verify_fix", "message": "x"}, {"repo": "acme/demo", "item_id": None, "kind": "api_error", "message": "HTTP 502"}]}, "noop_partial_failure"),
+            ({**clean_rep, "ok": False, "partial_failure": False, "alerts": []}, "noop_partial_failure"),
+            ({**clean_rep, "files_checked": 0}, "noop_empty_scope"),
+            ({**clean_rep, "repo_filter": "acme/demo"}, "noop_scoped_filter"),
+        ):
+            calls.clear()
+            res = publish_sync_digest.publish_sync_digest(guard_rep, "org/archive", api_call=fake_api)
+            self.assertEqual(res["action"], expected_action)
+            self.assertEqual(calls, [])
+            self.assertEqual(open_issues[-1]["state"], "open")
+
+        # 4f. Escalation to silent_30d with transient PATCH failure -> retry does NOT duplicate comment!
+        calls.clear()
+        rep_30d = {
+            **clean_rep,
+            "checked_at": "2026-12-26",
+            "alerts": [{"repo": "acme/demo", "item_id": "demo-1", "kind": "silent_30d", "message": "acme/demo #1: 31d without maintainer reply."}],
+        }
+        fail_next_patch["flag"] = True
+        with self.assertRaises(RuntimeError):
+            publish_sync_digest.publish_sync_digest(rep_30d, "org/archive", api_call=fake_api)
+        self.assertEqual(len(issue_comments[10]), 1)
+        # Retry succeeds with PATCH and skips duplicate comment via comment marker!
+        r_retry = publish_sync_digest.publish_sync_digest(rep_30d, "org/archive", api_call=fake_api)
+        self.assertEqual(r_retry["action"], "updated")
+        self.assertEqual(len(issue_comments[10]), 1)
+
+        # 4g. Close sequence PATCHes closed BEFORE commenting (so a failed PATCH posts zero stray close comments!)
+        fail_next_patch["flag"] = True
+        with self.assertRaises(RuntimeError):
+            publish_sync_digest.publish_sync_digest(clean_rep, "org/archive", api_call=fake_api)
+        self.assertEqual(len(issue_comments[10]), 1)
+        self.assertEqual(open_issues[-1]["state"], "open")
+
+        r_close = publish_sync_digest.publish_sync_digest(clean_rep, "org/archive", api_call=fake_api)
+        self.assertEqual(r_close["action"], "closed_resolved")
+        self.assertEqual(open_issues[-1]["state"], "closed")
+        self.assertEqual(open_issues[-1]["state_reason"], "completed")
+        self.assertEqual(len(issue_comments[10]), 2)
+
+        # 4h. dry_run never touches GitHub API
+        calls.clear()
+        r_dry = publish_sync_digest.publish_sync_digest(rep_30d, "org/archive", api_call=fake_api, dry_run=True)
+        self.assertEqual(r_dry["action"], "dry_run")
+        self.assertEqual(calls, [])
+
+        # 5. Empty and unknown --repo filters in sync_issues CLI exit non-zero cleanly
+        for bad_arg in ("", "   ", "no-such-owner/no-such-repo"):
+            proc = subprocess.run(
+                [sys.executable, str(ROOT / "tools" / "sync_issues.py"), "--repo", bad_arg, "--format", "json"],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(proc.returncode, 1)
+            payload = json.loads(proc.stdout)
+            self.assertFalse(payload["ok"])
 
 
 if __name__ == "__main__":

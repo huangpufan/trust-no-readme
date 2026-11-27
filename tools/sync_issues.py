@@ -546,7 +546,57 @@ def main() -> int:
 
     checked_date = args.date or dt.datetime.now(dt.timezone.utc).date().isoformat()
     token = resolve_github_token(args.token_env)
-    files = discover_tracking_files(AUDITS_DIR, repo_filter=args.repo)
+    repo_filter: str | None = None
+    if args.repo is not None:
+        repo_filter = args.repo.strip()
+        if not repo_filter:
+            msg = "Invalid empty --repo filter; omit --repo to check all tracked repositories"
+            if args.format == "json":
+                print(
+                    json.dumps(
+                        {
+                            "ok": False,
+                            "partial_failure": True,
+                            "checked_at": checked_date,
+                            "write": args.write,
+                            "repo_filter": repo_filter,
+                            "files_checked": 0,
+                            "files_changed": [],
+                            "changes": [],
+                            "alerts": [{"repo": "", "item_id": None, "kind": "api_error", "message": msg}],
+                        },
+                        indent=2,
+                        ensure_ascii=False,
+                    )
+                )
+            else:
+                print(f"ERROR: {msg}", file=sys.stderr)
+            return 1
+
+    files = discover_tracking_files(AUDITS_DIR, repo_filter=repo_filter)
+    if repo_filter is not None and not files:
+        msg = f"No tracking.json found matching --repo {repo_filter!r}"
+        if args.format == "json":
+            print(
+                json.dumps(
+                    {
+                        "ok": False,
+                        "partial_failure": True,
+                        "checked_at": checked_date,
+                        "write": args.write,
+                        "repo_filter": repo_filter,
+                        "files_checked": 0,
+                        "files_changed": [],
+                        "changes": [],
+                        "alerts": [{"repo": repo_filter, "item_id": None, "kind": "api_error", "message": msg}],
+                    },
+                    indent=2,
+                    ensure_ascii=False,
+                )
+            )
+        else:
+            print(f"ERROR: {msg}", file=sys.stderr)
+        return 1
 
     all_alerts: list[dict[str, Any]] = []
     all_changes: list[str] = []
@@ -577,6 +627,7 @@ def main() -> int:
                     "partial_failure": partial_failure,
                     "checked_at": checked_date,
                     "write": args.write,
+                    "repo_filter": repo_filter,
                     "files_checked": len(files),
                     "files_changed": updated_files,
                     "changes": all_changes,

@@ -22,7 +22,7 @@
 
 ## Local CLI Commands (Stdlib-Only Python 3.11+)
 - Scaffold snapshot: `python3 tools/new_audit.py --repo owner/name --sha <40-hex> --category <cat>`
-- Sync observed upstream issue states: `python3 tools/sync_issues.py --format json` (add `--write` to update `tracking.json`)
+- Sync observed upstream issue states: `python3 tools/sync_issues.py --format json` (add `--write` to update `tracking.json`; weekly read-only observer runs via `.github/workflows/sync-issues.yml` + `tools/publish_sync_digest.py`)
 - Rebuild catalog, impact & README tables: `python3 tools/build_index.py`
 - Verify schema, tracking proofs, hygiene, tokens, citations & fix commits (JSON): `python3 tools/validate.py --verify-upstream --format json`
 - Run unit tests: `python3 -m unittest discover -s tests -v`
