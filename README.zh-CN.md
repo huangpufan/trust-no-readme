@@ -34,10 +34,11 @@
 ## 已追踪项目总表
 
 <!-- CATALOG:BEGIN -->
-当前追踪 **1** 个开源项目（共 **1** 份固定 SHA 快照）：
+当前追踪 **2** 个开源项目（共 **2** 份固定 SHA 快照）：
 
 | 项目 | 版本 / SHA | 评级与结论 | 核心发现 | 上游 Issue | 报告 |
 |---|---|---|---|---|---|
+| [`CherryHQ/cherry-studio`](./audits/github/CherryHQ/cherry-studio/README.md) | `v2.2.3`<br>`62867d8f` | `H3 / R3` · `E3+D`<br>**`Isolate`** | 国内版传原始accountId发美国PostHog画像（国际版匿名）、431天零点击外发PlantUML图源、关隐私仍发Client-Id与第三方IP定位、手动导MCP默认授信。 | [#25580](https://github.com/CherryHQ/cherry-studio/issues/25580) (open)<br>[#25579](https://github.com/CherryHQ/cherry-studio/issues/25579) (open)<br>[#25581](https://github.com/CherryHQ/cherry-studio/issues/25581) (open) | [EN](./audits/github/CherryHQ/cherry-studio/2026-11-27-62867d8f.md) · [中文](./audits/github/CherryHQ/cherry-studio/2026-11-27-62867d8f.zh-CN.md) |
 | [`browser-use/browser-use`](./audits/github/browser-use/browser-use/README.md) | `1.0.8`<br>`94784c1f` | `H4 / R3` · `E3+D`<br>**`Isolate`** | 持续141天上传脚本与密码（拒合PR#733）、46秒删光README遥测节、借编程Agent绕过关闭开关、连--help也开人物画像。 | [#6541](https://github.com/browser-use/browser-use/issues/6541) (open)<br>[#6542](https://github.com/browser-use/browser-use/issues/6542) (open)<br>[#6467](https://github.com/browser-use/browser-use/issues/6467) (existing) | [EN](./audits/github/browser-use/browser-use/2026-11-26-94784c1f.md) · [中文](./audits/github/browser-use/browser-use/2026-11-26-94784c1f.zh-CN.md) |
 <!-- CATALOG:END -->
 

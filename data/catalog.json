@@ -1,12 +1,16 @@
 {
   "schema_version": 2,
-  "project_count": 1,
-  "snapshot_count": 1,
+  "project_count": 2,
+  "snapshot_count": 2,
   "by_tag": {
     "host-code-execution": [
       "browser-use/browser-use"
     ],
+    "mcp-auto-trust": [
+      "CherryHQ/cherry-studio"
+    ],
     "person-profile-tracking": [
+      "CherryHQ/cherry-studio",
       "browser-use/browser-use"
     ],
     "personal-browser-profile": [
@@ -18,17 +22,129 @@
     "prompt-driven-feedback": [
       "browser-use/browser-use"
     ],
+    "region-split-telemetry": [
+      "CherryHQ/cherry-studio"
+    ],
     "silent-policy-removal": [
       "browser-use/browser-use"
     ],
     "telemetry-opt-out-bypass": [
       "browser-use/browser-use"
     ],
+    "telemetry-opt-out-gap": [
+      "CherryHQ/cherry-studio"
+    ],
     "temp-file-retention": [
       "browser-use/browser-use"
+    ],
+    "undisclosed-ip-geolocation": [
+      "CherryHQ/cherry-studio"
+    ],
+    "zero-click-diagram-egress": [
+      "CherryHQ/cherry-studio"
     ]
   },
   "projects": [
+    {
+      "forge": "github",
+      "repo": "CherryHQ/cherry-studio",
+      "upstream_url": "https://github.com/CherryHQ/cherry-studio",
+      "project_readme": "audits/github/CherryHQ/cherry-studio/README.md",
+      "latest_report": "audits/github/CherryHQ/cherry-studio/2026-11-27-62867d8f.md",
+      "latest_translations": {
+        "zh-CN": "audits/github/CherryHQ/cherry-studio/2026-11-27-62867d8f.zh-CN.md"
+      },
+      "latest_sha": "62867d8f0047919e37a1cd05315057d5cfcec09e",
+      "latest_short_sha": "62867d8f",
+      "release": "v2.2.3",
+      "audited_at": "2026-11-27",
+      "category": "desktop-client",
+      "honesty": "H3",
+      "h3_scope": "primary",
+      "risk": "R3",
+      "verdict": "Isolate",
+      "evidence_max": "E3+D",
+      "coverage": "full-exhaustive",
+      "verification": "static+release-diff+dynamic",
+      "disclosure": "partially-redacted",
+      "status": "active",
+      "headline_en": "CN-only accountId + US PostHog profiling vs. anonymous policy, 431-day zero-click PlantUML egress, opt-out Client-Id/IP & MCP auto-trust.",
+      "headline_zh": "国内版传原始accountId发美国PostHog画像（国际版匿名）、431天零点击外发PlantUML图源、关隐私仍发Client-Id与第三方IP定位、手动导MCP默认授信。",
+      "companion_repos": [],
+      "upstream_issues": [
+        {
+          "state": "open",
+          "url": "https://github.com/CherryHQ/cherry-studio/issues/25580",
+          "label": "F1/F3: CN-only raw accountId + PostHog profiling vs. anonymous copy & undisclosed IP geolocation",
+          "ref": "#25580"
+        },
+        {
+          "state": "open",
+          "url": "https://github.com/CherryHQ/cherry-studio/issues/25579",
+          "label": "F2: plantuml chat blocks auto-send full diagram source to www.plantuml.com without click or disclosure",
+          "ref": "#25579"
+        },
+        {
+          "state": "open",
+          "url": "https://github.com/CherryHQ/cherry-studio/issues/25581",
+          "label": "F4: manual MCP import sets isTrusted: true and triggers immediate tool refresh on generic Confirm",
+          "ref": "#25581"
+        }
+      ],
+      "tags": [
+        "person-profile-tracking",
+        "region-split-telemetry",
+        "zero-click-diagram-egress",
+        "telemetry-opt-out-gap",
+        "undisclosed-ip-geolocation",
+        "mcp-auto-trust"
+      ],
+      "has_responses": false,
+      "snapshot_count": 1,
+      "snapshots": [
+        {
+          "file": "audits/github/CherryHQ/cherry-studio/2026-11-27-62867d8f.md",
+          "translations": {
+            "zh-CN": "audits/github/CherryHQ/cherry-studio/2026-11-27-62867d8f.zh-CN.md"
+          },
+          "sha": "62867d8f0047919e37a1cd05315057d5cfcec09e",
+          "short_sha": "62867d8f",
+          "release": "v2.2.3",
+          "audited_at": "2026-11-27",
+          "honesty": "H3",
+          "h3_scope": "primary",
+          "risk": "R3",
+          "verdict": "Isolate",
+          "evidence_max": "E3+D",
+          "coverage": "full-exhaustive",
+          "verification": "static+release-diff+dynamic",
+          "git_depth": "full",
+          "disclosure": "partially-redacted",
+          "status": "active",
+          "companion_repos": [],
+          "upstream_issues": [
+            {
+              "state": "open",
+              "url": "https://github.com/CherryHQ/cherry-studio/issues/25580",
+              "label": "F1/F3: CN-only raw accountId + PostHog profiling vs. anonymous copy & undisclosed IP geolocation",
+              "ref": "#25580"
+            },
+            {
+              "state": "open",
+              "url": "https://github.com/CherryHQ/cherry-studio/issues/25579",
+              "label": "F2: plantuml chat blocks auto-send full diagram source to www.plantuml.com without click or disclosure",
+              "ref": "#25579"
+            },
+            {
+              "state": "open",
+              "url": "https://github.com/CherryHQ/cherry-studio/issues/25581",
+              "label": "F4: manual MCP import sets isTrusted: true and triggers immediate tool refresh on generic Confirm",
+              "ref": "#25581"
+            }
+          ]
+        }
+      ]
+    },
     {
       "forge": "github",
       "repo": "browser-use/browser-use",

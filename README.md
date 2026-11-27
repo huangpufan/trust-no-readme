@@ -34,10 +34,11 @@ AI agents have made full-repository source inspection and isolated sandbox verif
 ## Tracked Projects
 
 <!-- CATALOG:BEGIN -->
-Currently tracking **1** project(s) across **1** SHA-pinned snapshot(s):
+Currently tracking **2** project(s) across **2** SHA-pinned snapshot(s):
 
 | Project | Revision | Rating & Verdict | Key Finding | Upstream Issues | Report |
 |---|---|---|---|---|---|
+| [`CherryHQ/cherry-studio`](./audits/github/CherryHQ/cherry-studio/README.md) | `v2.2.3`<br>`62867d8f` | `H3 / R3` · `E3+D`<br>**`Isolate`** | CN-only accountId + US PostHog profiling vs. anonymous policy, 431-day zero-click PlantUML egress, opt-out Client-Id/IP & MCP auto-trust. | [#25580](https://github.com/CherryHQ/cherry-studio/issues/25580) (open)<br>[#25579](https://github.com/CherryHQ/cherry-studio/issues/25579) (open)<br>[#25581](https://github.com/CherryHQ/cherry-studio/issues/25581) (open) | [EN](./audits/github/CherryHQ/cherry-studio/2026-11-27-62867d8f.md) · [中文](./audits/github/CherryHQ/cherry-studio/2026-11-27-62867d8f.zh-CN.md) |
 | [`browser-use/browser-use`](./audits/github/browser-use/browser-use/README.md) | `1.0.8`<br>`94784c1f` | `H4 / R3` · `E3+D`<br>**`Isolate`** | 141-day raw script/password telemetry (PR #733 rejected), 46s README wipe, coding-agent opt-out bypass & silent --help tracking. | [#6541](https://github.com/browser-use/browser-use/issues/6541) (open)<br>[#6542](https://github.com/browser-use/browser-use/issues/6542) (open)<br>[#6467](https://github.com/browser-use/browser-use/issues/6467) (existing) | [EN](./audits/github/browser-use/browser-use/2026-11-26-94784c1f.md) · [中文](./audits/github/browser-use/browser-use/2026-11-26-94784c1f.zh-CN.md) |
 <!-- CATALOG:END -->
 
